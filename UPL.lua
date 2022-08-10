@@ -16,6 +16,7 @@
 ]]
 
 local UPL       = {}
+local URL       = "https://raw.githubusercontent.com/jpmorenorj/UPL-Bruhwalker/main/"
 local ark_pred  = _G.Prediction
 pred:use_prediction()
 local print = function(ctx)
@@ -33,6 +34,14 @@ local function class()
         end
         return instance
     end})
+end
+
+local function AutoUpdate()
+    local result = http:get(URL .. "UPL.version")
+    if result and result ~= "" and tonumber(result) > Version then
+        http:download_file(URL .. "UPL.lua", "UPL.lua")
+        console:log("[Unified Prediction Library] Successfully updated. Please reload!")
+    end
 end
 
 local _Utility = class()
@@ -386,5 +395,8 @@ end
 
 
 _Utility()
-return _Prediction()
+
+_G.UPL = _Prediction()
+
+AutoUpdate()
 
